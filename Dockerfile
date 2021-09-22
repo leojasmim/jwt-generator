@@ -1,15 +1,11 @@
-FROM golang:1.16-alpine
+FROM golang:1.17
 
-WORKDIR /app
+WORKDIR /go/src/jwt-generator
+COPY . .
 
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
-
-COPY *.go ./
-
-RUN go build -o /jwt-generator
+RUN go get -d -v ./...
+RUN go install -v ./...
 
 EXPOSE 8080
 
-CMD [ "/jwt-generator" ]
+CMD ["jwt-generator"]

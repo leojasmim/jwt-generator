@@ -4,14 +4,15 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	app "github.com/leojasmim/jwt-generator/application"
+	"github.com/leojasmim/jwt-generator/application"
 )
 
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
+	r.Use(gin.Logger())
 
-	r.POST("/jwt", app.GenerateJWT)
+	r.POST("/jwt", application.GenerateJWT)
 
 	port := os.Getenv("API_PORT")
 	if port == "" {
