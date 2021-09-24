@@ -3,11 +3,11 @@ package domain
 import (
 	"encoding/json"
 
-	"github.com/golang-jwt/jwt"
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 type JwtGenerator interface {
-	Sign(payload string, privateKey string) (string, error)
+	Sign(payload interface{}, privateKey string) (string, error)
 }
 
 func GetJwtGenerator(alg string) JwtGenerator {
@@ -19,13 +19,21 @@ func GetJwtGenerator(alg string) JwtGenerator {
 	}
 }
 
-func createClaims(payload string) jwt.MapClaims {
+func createClaims(payload interface{}) jwt.MapClaims {
 	claimsMap := make(jwt.MapClaims)
-	err := json.Unmarshal([]byte(payload), &claimsMap)
-	if err != nil {
-		panic(err)
+	switch p := payload.(type) {
+	case string:
+		err := json.Unmarshal([]byte(p), &claimsMap)
+		if err != nil {
+			panic(err)
+		}
+		dump(claimsMap)
+
+	case map[string]interface{}:
+		for k, v := range p {
+			claimsMap[k] = v
+		}
 	}
-	dump(claimsMap)
 	return claimsMap
 }
 

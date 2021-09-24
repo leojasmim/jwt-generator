@@ -15,7 +15,7 @@ func NewRS256() RS256Generator {
 }
 
 //SignRS256 Sign payload with asymmetric algorithm RSA Signature with SHA-256
-func (j RS256Generator) Sign(payload string, privateKey string) (string, error) {
+func (j RS256Generator) Sign(payload interface{}, privateKey string) (string, error) {
 
 	claims := createClaims(payload)
 
