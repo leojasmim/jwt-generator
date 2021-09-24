@@ -41,7 +41,7 @@ func setupRequest() *http.Request {
 
 func getFormData() string {
 	data := url.Values{}
-	data.Set("payload", `{ "message" : "teste_jwt_generator" }`)
+	data.Set("payload", `{ "message" : "teste_jwt_generator", "inner" : { "key" : "nome", "value" : "abcde" } }`)
 	data.Set("sk", getRSAKey())
 	return data.Encode()
 }
